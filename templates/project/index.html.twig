@@ -1,0 +1,27 @@
+{% extends 'content.html.twig' %}
+
+{% block title %}
+	Mes Projets
+{% endblock %}
+
+{% block body %}
+	<h1>
+		Mes projets ({{ projects | length }})
+	</h1>
+
+	<section class="projects">
+		{% for p in projects %}
+
+			<div class="project">
+
+				<h2>{{ p.title }}</h2>
+				<p>{{ p.shortDescription }}</p>
+				<a href="{{ path('project_show',{'id':p.id}) }} " class="btn btn-primary">voir plus</a>
+
+			</div>
+		{% endfor %}
+
+
+	</section>
+
+{% endblock %}

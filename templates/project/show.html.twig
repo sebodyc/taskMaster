@@ -1,0 +1,20 @@
+{% extends 'content.html.twig' %}
+
+{% block title %}
+
+	{{project.title}}
+
+{% endblock %}
+
+{% block body %}
+
+	<h1>{{ project.title }}</h1>
+	<p class="lead">
+		{{project.shortDescription }}</p>
+
+	{# {{ description | raw }} #}
+
+	{{ project.description | markdown(60) }}
+
+
+{% endblock %}
