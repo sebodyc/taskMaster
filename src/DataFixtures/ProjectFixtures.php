@@ -4,9 +4,10 @@ namespace App\DataFixtures;
 
 use Faker\Factory;
 
+use App\Entity\Task;
 use Faker\Generator;
-use \App\Entity\Project;
 
+use \App\Entity\Project;
 use Doctrine\Persistence\ObjectManager;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 
@@ -37,6 +38,28 @@ class ProjectFixtures extends Fixture
                 $project->setDeadline($deadline);
             }
             $manager->persist($project);
+
+            for ($t = 0; $t < mt_rand(2, 6); $t++) {
+                $task = new Task;
+                $task->setTitle($this->faker->catchPhrase)
+                    ->setDescription($this->faker->markdownP())
+                    ->setCompleted($this->faker->boolean())
+                    ->setProject($project);
+
+                $createdAt = clone $createdAt;
+                $createdAt->modify('+' . mt_rand(0, 3) . 'days');
+
+                $task->setCreatedAt($createdAt);
+
+                if ($this->faker->boolean(40)) {
+                    $deadline = clone $createdAt;
+                    $days = mt_rand(3, 5);
+                    $deadline->modify("+$days days");
+                    $task->setDeadline($deadline);
+                }
+
+                $manager->persist($task);
+            }
         }
 
         $manager->flush();

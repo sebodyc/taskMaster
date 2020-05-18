@@ -12,6 +12,30 @@
 	<p class="lead">
 		{{project.shortDescription }}</p>
 
+	<section class="tasks  row">
+
+		{% for task in project.tasks %}
+
+			<div class="task col-md-3">
+				<H3>tache :{{ task.title }}</H3>
+				<p>{{ task.description }}</p>
+
+				{% if task.completed %}
+					<a href="{{ path('task_reopen',{'id':task.id}) }}" class=" btn btn-warning">Reouvrir</a>
+
+				{% else %}
+					<a href="{{ path('task_complete',{'id':task.id}) }}" class="btn btn-success">finr</a>
+
+
+				{% endif %}
+
+
+			</div>
+
+		{% endfor %}
+
+	</section>
+
 	{# {{ description | raw }} #}
 
 	{{ project.description | markdown(60) }}
