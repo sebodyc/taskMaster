@@ -1,11 +1,23 @@
 {% extends "base.html.twig" %}
 
 {% block content %}
-{% include "navbar.html.twig" %}
+	{% include "navbar.html.twig" %}
 
-<div class="conatainer pt-5">
-{% block body %}
 
-{% endblock %}
-</div>
+	{% for type,messages in app.flashes %}
+
+		<div class="alert alert-{{type}}">
+			{% for message in messages %}
+
+				<p>{{ message}}</p>
+
+			{% endfor %}
+		</div>
+
+	{% endfor %}
+
+
+	<div class="conatainer pt-5">
+		{% block body %}{% endblock %}
+	</div>
 {% endblock %}

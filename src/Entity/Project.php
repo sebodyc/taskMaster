@@ -49,9 +49,20 @@ class Project
      */
     private $tasks;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="ownedProjects")
+     */
+    private $owner;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Participation::class, mappedBy="project")
+     */
+    private $participations;
+
     public function __construct()
     {
         $this->tasks = new ArrayCollection();
+        $this->participations = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -144,6 +155,49 @@ class Project
             // set the owning side to null (unless already changed)
             if ($task->getProject() === $this) {
                 $task->setProject(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getOwner(): ?User
+    {
+        return $this->owner;
+    }
+
+    public function setOwner(?User $owner): self
+    {
+        $this->owner = $owner;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Participation[]
+     */
+    public function getParticipations(): Collection
+    {
+        return $this->participations;
+    }
+
+    public function addParticipation(Participation $participation): self
+    {
+        if (!$this->participations->contains($participation)) {
+            $this->participations[] = $participation;
+            $participation->setProject($this);
+        }
+
+        return $this;
+    }
+
+    public function removeParticipation(Participation $participation): self
+    {
+        if ($this->participations->contains($participation)) {
+            $this->participations->removeElement($participation);
+            // set the owning side to null (unless already changed)
+            if ($participation->getProject() === $this) {
+                $participation->setProject(null);
             }
         }
 

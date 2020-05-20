@@ -2,6 +2,10 @@
 
 namespace App\Tests\Project;
 
+use App\Entity\Project;
+use App\Entity\User;
+use DateTime;
+use Faker\Provider\DateTime as ProviderDateTime;
 use Liior\SymfonyTestHelpers\WebTestCase;
 
 
@@ -17,10 +21,6 @@ class ProjectControllerTest extends WebTestCase
 
         // 3..je devrais avoir
 
-        // $code = $client->getResponse()->getStatusCode();
-        // $this->assertEquals(200, $code);
-
-        // $this->assertResponseIsSuccessful();
 
         $this->assertResponseStatusCodeSame(200);
 
@@ -29,9 +29,28 @@ class ProjectControllerTest extends WebTestCase
 
     public function testUserCanAccesOneProject()
     {
+        $user = new User;
+        $user->setEmail("onsenfou2@gmail.com")
+            ->setPassword("password")
+            ->setFullname("toto");
 
-        $this->get('/projects/6');
+        $this->getManager()->persist($user);
+
+        $project = new Project;
+        $project->setTitle("titre2");
+        $project->setShortDescription("petite description");
+        $project->setDescription("longue description");
+        $project->setowner($user);
+        $project->setCreatedAt(new DateTime());
+
+        $this->getManager()->persist($project);
+        $this->getManager()->flush();
+
+
+
+
+        $this->get('/projects/' . $project->getId());
         $this->assertResponseStatusCodeSame(200);
-        $this->assertSee("Le droit de concrétiser vos projets autrement");
+        $this->assertSee($project->getTitle());
     }
 }

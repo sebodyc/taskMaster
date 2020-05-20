@@ -2,7 +2,7 @@
 	<a class="navbar-brand" href="{{ path('project_index') }}">
 		<font style="vertical-align: inherit;">
 			<font style="vertical-align: inherit;">
-				Navbar
+				TaskManager.com
 			</font>
 		</font>
 	</a>
@@ -16,7 +16,7 @@
 				<a class="nav-link" href="{{ path('project_index') }}">
 					<font style="vertical-align: inherit;">
 						<font style="vertical-align: inherit;">
-							Accueil
+							Mes Projets
 						</font>
 					</font>
 					<span class="sr-only">
@@ -29,19 +29,19 @@
 				</a>
 			</li>
 			<li class="nav-item">
-				<a class="nav-link" href="">
+				<a class="nav-link" href="{{ path('project_create') }}">
 					<font style="vertical-align: inherit;">
 						<font style="vertical-align: inherit;">
-							Creer
+							Creer un projet
 						</font>
 					</font>
 				</a>
 			</li>
 			<li class="nav-item">
-				<a class="nav-link" href="#">
+				<a class="nav-link" href="{{ path('security_login') }}">
 					<font style="vertical-align: inherit;">
 						<font style="vertical-align: inherit;">
-							Tarification
+							Connexion
 						</font>
 					</font>
 				</a>
@@ -56,14 +56,19 @@
 				</a>
 			</li>
 		</ul>
-		<form class="form-inline my-2 my-lg-0">
-			<input class="form-control mr-sm-2" type="text" placeholder="Chercher">
-			<button class="btn btn-secondary my-2 my-sm-0" type="submit">
-				<font style="vertical-align: inherit;">
-					<font style="vertical-align: inherit;">> Chercher
-					</font>
-				</font>
-			</button>
-		</form>
+		<ul class="navbar-bar">
+			<li class="nav-item">
+				<a href="{{ path('security_logout') }}" class="btn btn-danger">deconexion</a>
+			</li>
+		</ul>
+		{# <form class="form-inline my-2 my-lg-0">
+																	<input class="form-control mr-sm-2" type="text" placeholder="Chercher">
+																	<button class="btn btn-secondary my-2 my-sm-0" type="submit">
+																		<font style="vertical-align: inherit;">
+																			<font style="vertical-align: inherit;">> Chercher
+																			</font>
+																		</font>
+																	</button>
+																</form> #}
 	</div>
 </nav>

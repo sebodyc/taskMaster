@@ -8,35 +8,69 @@
 
 {% block body %}
 
-	<h1>{{ project.title }}</h1>
-	<p class="lead">
-		{{project.shortDescription }}</p>
+	<h1 class="ml-3">{{ project.title }}</h1>
 
-	<section class="tasks  row">
+	<p class="lead ml-3">{{project.shortDescription }}</p>
+
+	<h2>Equipe:</h2>
+	<ul>
+		<li>
+			<strong>{{ project.owner.fullName }}
+			</strong>
+			(Propriétaire)
+		</li>
+		{% for participation in project.participations %}
+
+			<li>
+				<strong>{{ participation.user.fullName}}</strong>
+				role:
+				{{participation.role | project_role }}</li>
+
+		{% endfor %}
+	</ul>
+
+	<section class="tasks  row ml-3">
 
 		{% for task in project.tasks %}
 
-			<div class="task col-md-3">
+			<div class="task col-md-3 mb-3 ml-3">
 				<H3>tache :{{ task.title }}</H3>
 				<p>{{ task.description }}</p>
 
-				{% if task.completed %}
-					<a href="{{ path('task_reopen',{'id':task.id}) }}" class=" btn btn-warning">Reouvrir</a>
+				{% if is_granted('CAN_MANAGE_TASK',project) %}
 
-				{% else %}
-					<a href="{{ path('task_complete',{'id':task.id}) }}" class="btn btn-success">finr</a>
-
+					{% if task.completed %}
+						<a href="{{ path('task_reopen',{'id':task.id}) }}" class=" btn btn-warning">Reouvrir la tache</a>
+						<a href="{{ path('task_delete',{'id':task.id}) }}" class="btn btn-danger">supprimer la tache</a>
+					{% else %}
+						<a href="{{ path('task_complete',{'id':task.id}) }}" class="btn btn-success">finir la tache</a>
+					{% endif %}
 
 				{% endif %}
-
 
 			</div>
 
 		{% endfor %}
 
-	</section>
+		{% if is_granted('CAN_MANAGE_TASK',project) %}
 
-	{# {{ description | raw }} #}
+			<div class="col-md-3 mb-3 ml-3">
+
+				{{form_start(taskForm)}}
+
+				{{form_widget(taskForm)}}
+
+
+				<button type="submit">ajouter</button>
+
+				{{form_end(taskForm)}}
+
+			</div>
+
+		{% endif %}
+
+
+	</section>
 
 	{{ project.description | markdown(60) }}
 

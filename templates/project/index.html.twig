@@ -5,21 +5,31 @@
 {% endblock %}
 
 {% block body %}
-	<h1>
-		Mes projets ({{ projects | length }})
-	</h1>
+	{% if projects |length > 0 %}
 
-	<section class="projects">
-		{% for p in projects %}
 
-			<div class="project">
+		<h1 class="project ml-3">
+			Mes projets ({{ projects | length }})
+		</h1>
 
-				<h2>{{ p.title }}</h2>
-				<p>{{ p.shortDescription }}</p>
-				<a href="{{ path('project_show',{'id':p.id}) }} " class="btn btn-primary">voir plus</a>
+		<section class="projects ml-3">
+			{% for p in projects %}
 
-			</div>
-		{% endfor %}
+				<div class="project ml-3">
+
+					<h2>{{ p.title }}</h2>
+					<p>{{ p.shortDescription }}</p>
+					<a href="{{ path('project_show',{'id':p.id}) }} " class="btn btn-primary">Voir plus</a>
+					<a href="{{ path('project_delete',{'id':p.id}) }} " class="btn btn-danger">Supprimer</a>
+
+				</div>
+			{% endfor %}
+
+		{% else %}
+			<h1>vous n'avez pas encore de project</h1>
+			<a href="{{ path('project_create') }}"></a>
+
+		{% endif %}
 
 
 	</section>

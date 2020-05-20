@@ -1,0 +1,19 @@
+{% extends 'content.html.twig' %}
+
+{% block title %}
+	Mes Projets
+{% endblock %}
+
+{% block body %}
+
+	{{ form_start(projectForm) }}
+
+	{{form_widget(projectForm)}}
+
+
+	<button type="submit">enregister les modif</button>
+
+	{{ form_end(projectForm) }}
+
+
+{% endblock %}

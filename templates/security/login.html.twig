@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello SecurityController!
+{% endblock %}
+
+{% block body %}
+	<div class="d-flex flex-column justify-content-center align-items-center" style="height:90vh;">
+
+		<h1>TaskM@nager</h1>
+
+		<p class="lead">Gerer vos projets en sécurité</p>
+
+		<form action="" method="post">
+
+
+			<div class="form-group"><input type="email" placeholder="adresse email" name="_username"></div>
+			<div class="form-group"><input type="password" placeholder="password" name="_password"></div>
+			<button type="submit" class="btn btn-primary">connexion</button>
+			<a href="{{ path('security_register') }}">
+				Creer un compte
+			</a>
+
+
+		</form>
+	</div>
+{% endblock %}
