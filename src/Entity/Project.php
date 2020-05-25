@@ -3,12 +3,14 @@
 namespace App\Entity;
 
 use App\Repository\ProjectRepository;
+use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass=ProjectRepository::class)
+ * @ORM\HasLifecycleCallbacks
  */
 class Project
 {
@@ -64,6 +66,17 @@ class Project
         $this->tasks = new ArrayCollection();
         $this->participations = new ArrayCollection();
     }
+
+    /**
+     * @Orm\PrePersist
+     *
+     * 
+     */
+    // public function initializeCreatedAt()
+    // {
+
+    //     $this->createdAt = new DateTime();
+    // }
 
     public function getId(): ?int
     {
@@ -190,6 +203,25 @@ class Project
 
         return $this;
     }
+
+    /**
+     * @return array<User>
+     *
+     * 
+     */
+    public function getManagers(): array
+    {
+        $users = [];
+
+        foreach ($this->participations as $participation) {
+            if ($participation->getRole() === 'MANAGER') {
+                $users[] = $participation->getUser();
+            }
+        }
+
+        return $users;
+    }
+
 
     public function removeParticipation(Participation $participation): self
     {

@@ -30,3 +30,17 @@ services:
     cebe\markdown\Parser:
         alias: cebe\markdown\GithubMarkdown
 
+    # App\EventListener\ProjectListener:
+    #     tags:
+    #         - { name: doctrine.event_listener, event: prePersist}
+            
+    # App\EventListener\ProjectSubscriber:
+    #     tags:
+    #         - { name: doctrine.event_subscriber}
+
+    App\EventListener\ProjectEntityListener:
+        tags:
+            - { name: doctrine.orm.entity_listener,
+                event: prePersist ,
+                entity: App\Entity\Project,
+                }

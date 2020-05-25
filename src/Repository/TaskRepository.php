@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\Project;
 use App\Entity\Task;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -14,9 +15,30 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class TaskRepository extends ServiceEntityRepository
 {
+
+
+
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Task::class);
+    }
+
+    public function countByProject(Project $project, bool $completed = null)
+    {
+        $builder = $this->createQueryBuilder('t')
+            ->select('COUNT(t)')
+            ->where('t.project= :project')
+            ->setParameter('project', $project);
+
+        if ($completed !== null) {
+            $builder->andWhere('t.completed= :completed')
+                ->setParameter('completed', $completed);
+        }
+
+        $query = $builder->getQuery();
+        $query->getSingleScalarResult();
+
+        return $query->getSingleScalarResult();
     }
 
     // /**

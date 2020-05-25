@@ -14,17 +14,17 @@ class ProjectControllerTest extends WebTestCase
 {
     public function testUserCanSeeProject()
     {
-
+        $this->authenticate($this->client, 'robert');
         // 2..en appliquant tel action
 
-        $this->get('/projects');
+        $this->get('/');
 
         // 3..je devrais avoir
 
 
         $this->assertResponseStatusCodeSame(200);
 
-        $this->assertSee("Mes projets");
+        $this->assertSee("Projets");
     }
 
     public function testUserCanAccesOneProject()
@@ -47,9 +47,11 @@ class ProjectControllerTest extends WebTestCase
         $this->getManager()->flush();
 
 
+        $this->authenticate($this->client, $user);
 
 
         $this->get('/projects/' . $project->getId());
+        //test
         $this->assertResponseStatusCodeSame(200);
         $this->assertSee($project->getTitle());
     }

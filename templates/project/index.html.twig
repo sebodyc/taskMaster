@@ -5,6 +5,7 @@
 {% endblock %}
 
 {% block body %}
+
 	{% if projects |length > 0 %}
 
 
@@ -18,9 +19,12 @@
 				<div class="project ml-3">
 
 					<h2>{{ p.title }}</h2>
+
 					<p>{{ p.shortDescription }}</p>
 					<a href="{{ path('project_show',{'id':p.id}) }} " class="btn btn-primary">Voir plus</a>
+					<a href="{{ path('project_edit',{'id':p.id}) }}" class=" btn btn-warning">modifier le projet</a>
 					<a href="{{ path('project_delete',{'id':p.id}) }} " class="btn btn-danger">Supprimer</a>
+
 
 				</div>
 			{% endfor %}

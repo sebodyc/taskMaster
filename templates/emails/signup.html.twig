@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello SecurityController!
+{% endblock %}
+
+{% block body %}
+	<h1>Bienvue chez TaskM@ster!</h1>
+
+	<p>
+		Vous vous etes connecté avec le nom d'utilsateur :<span>{{ username }}</span>
+
+
+	</p>
+	<p>
+		et avec l'email suivant:
+		<code>{{ email.to[0].address }}</code>
+	</p>
+
+	<p>
+		<a href="http://localhost:3020/login">connecter vous au liens suivant pour valider votre inscription</a>
+		(ce lien est valide jusqu'au
+		{{ expiration_date | date("m/d/Y", "Europe/Paris") }})
+	</p>
+
+{% endblock %}

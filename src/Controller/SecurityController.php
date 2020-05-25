@@ -3,10 +3,15 @@
 namespace App\Controller;
 
 use App\Form\RegisterType;
+use Symfony\Component\Mime\Address;
+use App\Controller\MailerController;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Mailer\Mailer;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class SecurityController extends AbstractController
@@ -28,8 +33,9 @@ class SecurityController extends AbstractController
 
     /**
      * @Route("/register", name="security_register")
+     * 
      */
-    public function register(Request $request, EntityManagerInterface $em, UserPasswordEncoderInterface $encoder)
+    public function register(Request $request, EntityManagerInterface $em, UserPasswordEncoderInterface $encoder, MailerInterface $mailer)
     {
 
         $form = $this->createForm(RegisterType::class);
@@ -45,14 +51,21 @@ class SecurityController extends AbstractController
             $em->persist($user);
             $em->flush();
 
-            $this->addFlash('success', "bravo compte creer");
+
+            $registerMessage = new MailerController;
+            $registerMessage->sendEmail(
+                $mailer,
+                $user->getEmail(),
+                'Merci pour votre inscription',
+                'emails/signup.html.twig',
+                $user->getfullname()
+            );
+
+            $this->addFlash('success', "Vous avez créer un compte un email de confirmation vous a ete envoyé");
+
 
             return $this->redirectToRoute("security_login");
         }
-
-
-
-
 
         return $this->render('security/register.html.twig', [
             'form' => $form->createView()

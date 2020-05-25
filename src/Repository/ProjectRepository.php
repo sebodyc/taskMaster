@@ -2,9 +2,10 @@
 
 namespace App\Repository;
 
+use App\Entity\User;
 use App\Entity\Project;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 
 /**
  * @method Project|null find($id, $lockMode = null, $lockVersion = null)
@@ -17,6 +18,38 @@ class ProjectRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Project::class);
+    }
+
+    public function findWithTasks(User $user)
+    {
+
+        $query = $this->createQueryBuilder('p')
+            ->select('p.title AS project , t.title, u.fullname ,t.completed')
+            ->join('p.tasks', 't')
+            ->join('p.owner', 'u')
+            ->andWhere('p.owner = :user')
+            ->setParameter('user', $user)
+            ->getQuery();
+
+        return $query->getResult();
+    }
+
+    public function countByProject(Project $project, bool $completed = null)
+    {
+        $builder = $this->createQueryBuilder('t')
+            ->select('COUNT(t)')
+            ->where('t.project= :project')
+            ->setParameter('project', $project);
+
+        if ($completed !== null) {
+            $builder->andWhere('t.completed= :completed')
+                ->setParameter('completed', $completed);
+        }
+
+        $query = $builder->getQuery();
+        $query->getSingleScalarResult();
+
+        return $query->getSingleScalarResult();
     }
 
     // /**
